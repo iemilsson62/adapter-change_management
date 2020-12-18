@@ -2,7 +2,6 @@ const options = {
     url: 'https://dev59935.service-now.com',
     username: 'admin',
     password: '8qejseEFJ1WB'
-    serviceNowTable: 'change_request'
 };
 /**
  * Import the Node.js request package.
@@ -10,8 +9,13 @@ const options = {
  */
 const request = require('request');
 
+
 // We'll use this regular expression to verify REST API's HTTP response status code.
 const validResponseRegex = /(2\d\d)/;
+
+// Use JSDoc to create a JSDoc data type for an IAP callback.
+// Call the new type iapCallback.
+// Notice iapCallback is a data-first callback.
 
 /**
  * @callback iapCallback
@@ -26,6 +30,7 @@ const validResponseRegex = /(2\d\d)/;
  * @param {error} [errorMessage] - If an error is caught, return error
  *   message in optional second argument to callback function.
  */
+
 
 /**
  * @function constructUri
@@ -61,6 +66,7 @@ function isHibernating(response) {
   && response.statusCode === 200;
 }
 
+
 /**
  * @function processRequestResults
  * @description Inspect ServiceNow API response for an error, bad response code, or
@@ -85,25 +91,23 @@ function processRequestResults(error, response, body, callback) {
    * it must call function isHibernating.
    */
 
-     // Initialize return arguments for callback
   let callbackData = null;
   let callbackError = null;
 
-    if (error) {
+ isHibernating(response);
+
+   if (error) {
       console.error('Error present.');
       callbackError = error;
     } else if (!validResponseRegex.test(response.statusCode)) {
       console.error('Bad response code.');
       callbackError = response;
-    } else if isHibernating(response) ;
     } else {
       callbackData = response;
     }
-
-    
     return callback(callbackData, callbackError);
-  );
-
+ 
+}
 
 /**
  * @function sendRequest
@@ -134,18 +138,19 @@ function sendRequest(callOptions, callback) {
    * hardcoded values.
    */
   const requestOptions = {
-   method: callOptions.method,
+  method: callOptions.method,
 auth: {
 user: options.username,
 pass: options.password,
 },
 baseUrl: options.url,
-   
-  };
+uri : uri,
+};
   request(requestOptions, (error, response, body) => {
     processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
   });
 }
+
 
 /**
  * @function get
@@ -165,6 +170,7 @@ function get(callOptions, callback) {
   sendRequest(callOptions, (results, error) => callback(results, error));
 }
 
+
 /**
  * @function post
  * @description Call the ServiceNow POST API. Sets the API call's method,
@@ -181,6 +187,7 @@ function post(callOptions, callback) {
   callOptions.method = 'POST';
   sendRequest(callOptions, (results, error) => callback(results, error));
 }
+
 
 /**
  * @function main
@@ -201,6 +208,6 @@ function main() {
   });
 }
 
+
 // Call main to run it.
 main();
-
