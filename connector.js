@@ -1,3 +1,8 @@
+const request = require('request');
+
+const validResponseRegex = /(2\d\d)/;
+
+
 /**
  * The ServiceNowConnector class.
  *
@@ -71,6 +76,8 @@ processRequestResults(error, response, body, callback) {
   let callbackData = null;
   let callbackError = null;
 
+  this.isHibernating(response);
+
     if (error) {
       console.error('Error present.');
       callbackError = error;
@@ -120,6 +127,7 @@ user: callOptions.username,
 pass: callOptions.password,
 },
 baseUrl: callOptions.url,
+uri : uri,
    
   };
   request(requestOptions, (error, response, body) => {
@@ -128,7 +136,6 @@ baseUrl: callOptions.url,
 }
 
 
-/**
   /**
    * @callback iapCallback
    * @description A [callback function]{@link
@@ -163,12 +170,15 @@ baseUrl: callOptions.url,
     getCallOptions.query = 'sysparm_limit=1';
     this.sendRequest(getCallOptions, (results, error) => callback(results, error));
   }
+
   /**
    * @memberof ServiceNowConnector
    * @method post
    * @summary Calls ServiceNow POST API
-   * @description Call the ServiceNow POST API. Sets the API call's method and query,
-   *   then calls this.sendRequest(). 
+   * @description Call the ServiceNow GET API. Sets the API call's method and query,
+   *   then calls this.sendRequest(). In a production environment, this method
+   *   should have a parameter for passing limit, sort, and filter options.
+   *   We are ignoring that for this course and hardcoding a limit of one.
    *
    * @param {iapCallback} callback - Callback a function.
    * @param {(object|string)} callback.data - The API's response. Will be an object if sunnyday path.
@@ -177,7 +187,7 @@ baseUrl: callOptions.url,
    */
   post(callback) {
     let getCallOptions = { ...this.options };
-    getCallOptions.method = POST;
+    getCallOptions.method = 'POST';
     this.sendRequest(getCallOptions, (results, error) => callback(results, error));
   }
 
