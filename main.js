@@ -1,7 +1,7 @@
 const options = {
-    url: 'https://dev59935.service-now.com',
+    url: 'https://dev102791.service-now.com',
     username: 'admin',
-    password: '8qejseEFJ1WB',
+    password: 'rBzsoWfY98MK',
     serviceNowTable: 'change_request'
 };
 // Import built-in Node.js package path.
@@ -49,9 +49,9 @@ function mainOnObject() {
   });
   connector.post((data, error) => {
     if (error) {
-      console.error(`\nError returned from GET request:\n${JSON.stringify(error)}`);
+      console.error(`\nError returned from POST request:\n${JSON.stringify(error)}`);
     }
-    console.log(`\nResponse returned from GET request:\n${JSON.stringify(data)}`)
+    console.log(`\nResponse returned from POST request:\n${JSON.stringify(data)}`)
   });
 }
 

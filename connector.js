@@ -54,10 +54,12 @@ isHibernating(response) {
  *
  * @return {string} ServiceNow URL
  */
-constructUri(getCallOptions) {
-  let uri = `/api/now/table/${getCallOptions.ServiceNowTable}`;
-  if (getCallOptions.query) {
-    uri = uri + '?' + getCallOptions.query;
+constructUri(GetCallOptions) {
+  //let SNowTable = GetCallOptions.ServiceNowTable
+  //let uri = '/api/now/table/' + GetCallOptions.ServiceNowTable;
+  let uri = `/api/now/table/change_request`;
+  if (GetCallOptions.query) {
+    uri = uri + '?' + GetCallOptions.query;
   }
   return uri;
 }
